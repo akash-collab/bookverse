@@ -1,0 +1,346 @@
+:root {
+    --mint-green: #D1E8E2;
+    --deep-teal: #19747E;
+    --sky-blue: #A9D6E5;
+    --light-gray: #E2E2E2;
+    --text-dark: #333;
+    --font-main: 'Poppins', sans-serif;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-main);
+    background-color: var(--mint-green);
+    color: var(--text-dark);
+}
+
+header {
+    background-color: var(--deep-teal);
+    color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-intro {
+    font-size: 1rem;
+    text-align: center;
+    margin-top: -0.5rem;
+    margin-bottom: 0.5rem;
+    color: #555;
+}
+
+/* Shared modal styling */
+#login-modal,
+#register-modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(8px);
+    background-color: rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease-in-out;
+}
+
+#login-modal-content,
+#register-modal-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.auth-form input {
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.auth-form button {
+    padding: 0.75rem;
+    background-color: #19747E;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.auth-form button:hover {
+    background-color: #155d65;
+}
+
+.auth-form p {
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.auth-form a {
+    color: #19747E;
+    text-decoration: none;
+}
+
+.auth-form a:hover {
+    text-decoration: underline;
+}
+
+/* Close button */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 16px;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* Initially hidden */
+.modal-hidden {
+    display: none !important;
+}
+
+#login-modal-content,
+#register-modal-content {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform: scale(1);
+    opacity: 1;
+}
+
+#logoutBtn {
+    padding: 0.5rem 1rem;
+    background-color: #d9534f;
+    color: white;
+    border: 2px solid #d9534f;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#logoutBtn:hover {
+    background-color: #dd827f;
+    border: 2px solid #dd827f;
+    color: white;
+}
+
+.auth-form textarea {
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    resize: vertical;
+    min-height: 100px;
+}
+
+main {
+    padding: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Upload Book Section */
+#upload-book-section {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    margin-top: 1rem;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.2s ease;
+}
+
+#upload-book-section:hover {
+    transform: translateY(-2px);
+}
+
+#upload-book-section h2 {
+    margin-top: 0;
+    color: var(--deep-teal);
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+/* Suggestion Section */
+#suggestion-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+
+#suggestion-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem;
+    background-color: var(--light-gray);
+    /* Light gray background */
+    border-radius: 16px;
+}
+
+/* Book Suggestion Cards */
+.book-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.book-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+}
+
+.book-card h3 {
+    font-size: 1.2rem;
+    color: var(--deep-teal);
+    margin-bottom: 0.4rem;
+}
+
+.book-card .book-author {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 0.6rem;
+}
+
+.book-card .book-description {
+    color: #444;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    z-index: 9999;
+}
+
+.suggestion-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.book-suggestion {
+    background: #d1e8e2;
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.vote-btn {
+    background-color: #19747e;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.vote-btn:hover {
+    background-color: #145960;
+}
+
+#suggestion-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background-color: var(--light-gray);
+    border-radius: 16px;
+    margin-bottom: 2rem;
+}
+
+.suggestion-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.book-suggestion {
+    background-color: white;
+    border-left: 4px solid var(--deep-teal);
+    padding: 1rem 1.2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.book-suggestion:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.book-suggestion h3 {
+    font-size: 1.1rem;
+    color: var(--deep-teal);
+    margin-bottom: 0.25rem;
+}
+
+.book-suggestion p {
+    margin: 0.25rem 0;
+    line-height: 1.4;
+    font-size: 0.95rem;
+    color: #444;
+}
+
+.book-suggestion .vote-btn {
+    margin-top: 0.6rem;
+    background-color: var(--sky-blue);
+    color: white;
+    border: none;
+    padding: 0.4rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.book-suggestion .vote-btn:hover {
+    background-color: #6db4c7;
+}
+
+.book-suggestion .vote-count {
+    font-weight: bold;
+    color: var(--deep-teal);
+    font-size: 0.95rem;
+}
+#vote-chart-section {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
