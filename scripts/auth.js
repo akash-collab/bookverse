@@ -3,7 +3,8 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     onAuthStateChanged,
-    signOut
+    signOut,
+    updateProfile
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 import { db } from "../firebase/config.js";
 import { collection, addDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js"
@@ -34,7 +35,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const name = document.getElementById("register-name").value.trim();
 
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            await updateProfile(userCredential.user, {
+                displayName: name
+            });
             registerMessage.textContent = "Registered successfully. Redirecting to login...";
             registerMessage.style.color = "green";
 
@@ -68,12 +72,36 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    async function fetchAndRenderBooks() {
+        const querySnapshot = await getDocs(collection(db, "books"));
+        suggestionSection.innerHTML = "<h2>Book Suggestions</h2>";
+        const books = [];
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            books.push({
+                ...data,
+                timestamp: data.timestamp ? data.timestamp.toDate() : new Date(0)
+            });
+        });
+        books.sort((a, b) => b.timestamp - a.timestamp);
+        books.forEach((book) => {
+            const bookDiv = document.createElement("div");
+            bookDiv.className = "book-card";
+            bookDiv.innerHTML = `
+            <h3>${book.title}</h3>
+            <p class="book-author">by ${book.author}</p>
+            <p class="book-description">${book.description}</p>
+        `;
+            suggestionSection.appendChild(bookDiv);
+        });
+    }
+
     // On auth state change
     onAuthStateChanged(auth, (user) => {
         const loadingScreen = document.getElementById("loading-screen");
         const loginModal = document.getElementById("login-modal");
         const registerModal = document.getElementById("register-modal");
-    
+
         if (user) {
             // User is logged in
             userEmail.textContent = user.email;
@@ -88,14 +116,14 @@ document.addEventListener("DOMContentLoaded", () => {
             // User is not logged in
             const showRegisterEvent = new Event("show-register-modal");
             document.dispatchEvent(showRegisterEvent);
-    
+
             userInfo.classList.add("hidden");
             loginBtn.classList.remove("hidden");
             userEmail.textContent = "";
             suggestionSection.classList.add("hidden");
             uploadSection.classList.add("hidden");
         }
-    
+
         if (loadingScreen) loadingScreen.style.display = "none";
     });
     // Logout
@@ -115,51 +143,27 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     //Upload Book suggestion
     uploadForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const title = document.getElementById("book-title").value;
-    const author = document.getElementById("book-author").value;
-    const description = document.getElementById("book-description").value;
-    try {
-        await addDoc(collection(db, "bookSuggestions"), {
-            title,
-            author,
-            description,
-            timestamp: serverTimestamp(),
-            votes: 0,
-            voters: [],
-            userId: auth.currentUser.uid,
-            username: auth.currentUser.email
-        });
-        uploadMessage.textContent = "Book Suggested Successfully!";
-        uploadMessage.style.color = "green";
-        uploadForm.reset();
-    } catch (error) {
-        uploadMessage.textContent = "Error: " + error.message;
-        uploadMessage.style.color = "red";
-    }
-});
-    //Display Books
-    async function fetchAndRenderBooks() {
-        const querySnapshot = await getDocs(collection(db, "books"));
-        suggestionSection.innerHTML = "<h2>Book Suggestions</h2>";
-        const books = [];
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            books.push({
-                ...data,
-                timestamp: data.timestamp ? data.timestamp.toDate() : new Date(0)
+        e.preventDefault();
+        const title = document.getElementById("book-title").value;
+        const author = document.getElementById("book-author").value;
+        const description = document.getElementById("book-description").value;
+        try {
+            await addDoc(collection(db, "bookSuggestions"), {
+                title,
+                author,
+                description,
+                timestamp: serverTimestamp(),
+                votes: 0,
+                voters: [],
+                userId: auth.currentUser.uid,
+                username: auth.currentUser.displayName || auth.currentUser.email
             });
-        });
-        books.sort((a, b) => b.timestamp - a.timestamp);
-    books.forEach((book) => {
-        const bookDiv = document.createElement("div");
-        bookDiv.className = "book-card";
-        bookDiv.innerHTML = `
-            <h3>${book.title}</h3>
-            <p class="book-author">by ${book.author}</p>
-            <p class="book-description">${book.description}</p>
-        `;
-        suggestionSection.appendChild(bookDiv);
+            uploadMessage.textContent = "Book Suggested Successfully!";
+            uploadMessage.style.color = "green";
+            uploadForm.reset();
+        } catch (error) {
+            uploadMessage.textContent = "Error: " + error.message;
+            uploadMessage.style.color = "red";
+        }
     });
-    }
 });
