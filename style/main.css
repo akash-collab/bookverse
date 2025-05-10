@@ -174,9 +174,9 @@ main {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s ease;
   transform: translateY(20px);
-  max-height: 80px; 
+  max-height: 80px;
   overflow-y: auto;
-  
+
 }
 
 #suggestion-section h2 {
@@ -192,6 +192,7 @@ main {
     transform: translateY(0);
   }
 }
+
 .suggestion-container {
   display: flex;
   flex-direction: column;
@@ -386,7 +387,8 @@ label[for="genre-filter"] {
   font-family: 'Poppins', sans-serif;
 }
 
-#genre-filter, label[for="genre-filter"] {
+#genre-filter,
+label[for="genre-filter"] {
   margin-left: 1rem;
 }
 
@@ -400,6 +402,7 @@ label[for="genre-filter"] {
   height: 18px !important;
   display: block;
 }
+
 .ql-toolbar .ql-formats button {
   width: 40px;
   height: 40px;
@@ -409,6 +412,7 @@ label[for="genre-filter"] {
   justify-content: center;
   box-sizing: border-box;
 }
+
 .ql-toolbar .ql-formats button.active {
   background-color: var(--mint-green);
   color: white;
@@ -434,7 +438,7 @@ label[for="genre-filter"] {
 }
 
 .btn {
-  background-color: #8ccbdc; /* Deep Teal */
+  background-color: #8ccbdc;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -497,6 +501,7 @@ label[for="genre-filter"] {
   border-radius: 20px 0 0 20px;
   transition: width 0.3s ease-in-out;
 }
+
 /* ===== Quill Editor Custom Styling ===== */
 
 /* Editor area */
@@ -545,7 +550,7 @@ label[for="genre-filter"] {
 .ql-toolbar button.ql-active,
 .ql-toolbar .ql-picker-label.ql-active {
   background-color: var(--mint-green) !important;
-  color: white ;
+  color: white;
 }
 
 /* Dropdown menus */
@@ -571,6 +576,37 @@ label[for="genre-filter"] {
   width: 18px;
   height: 18px;
 }
-.ql-italic, .ql-bold, .ql-underline, .ql-strike, .ql-blockquote, .ql-code-block, .ql-list, .ql-clean{
+
+.ql-italic,
+.ql-bold,
+.ql-underline,
+.ql-strike,
+.ql-blockquote,
+.ql-code-block,
+.ql-list,
+.ql-clean {
   background-color: white !important;
+}
+
+.notification {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  padding: 15px 20px;
+  background-color: #19747E;
+  color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s ease-in-out;
+}
+
+.notification.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.notification.show {
+  opacity: 1;
 }

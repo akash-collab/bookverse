@@ -80,4 +80,52 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   });
+  function showNotification(message, duration = 5000) {
+  const notification = document.getElementById('notification');
+  notification.textContent = message;
+  notification.classList.remove('hidden');
+  notification.classList.add('show');
+
+  setTimeout(() => {
+    notification.classList.remove('show');
+    notification.classList.add('hidden');
+  }, duration);
+}
+
+function getDaysDifference(date1, date2) {
+  const diffTime = Math.abs(date2 - date1);
+  return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+}
+
+auth.onAuthStateChanged(user => {
+  if (!user) return;
+
+  const userId = user.uid;
+  const q = query(collection(db, 'readingProgress'), where('uid', '==', userId));
+
+  onSnapshot(q, (snapshot) => {
+    let hasRecentUpdate = false;
+    const today = new Date();
+    let milestoneShown = false;
+
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const lastUpdate = data.timestamp.toDate();
+      const percent = Math.round((data.pagesRead / data.totalPages) * 100);
+
+      // ✅ Daily prompt: if last update > 1 day ago
+      const daysSinceUpdate = getDaysDifference(today, lastUpdate);
+      if (daysSinceUpdate >= 1 && !hasRecentUpdate) {
+        showNotification(`Don't forget to update your progress on "${data.bookName}"!`);
+        hasRecentUpdate = true;
+      }
+
+      // ✅ Milestone alerts
+      if ((percent === 25 || percent === 50 || percent === 75 || percent === 100) && !milestoneShown) {
+        showNotification(`🎉 Congrats! You've read ${percent}% of "${data.bookName}"`);
+        milestoneShown = true;
+      }
+    });
+  });
+});
 });
