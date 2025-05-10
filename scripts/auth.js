@@ -7,7 +7,7 @@ import {
     updateProfile
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 import { db } from "../firebase/config.js";
-import { collection, addDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js"
+import { collection, addDoc, getDocs, serverTimestamp, setDoc, doc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js"
 document.addEventListener("DOMContentLoaded", () => {
     const registerForm = document.getElementById("register-form");
     const loginForm = document.getElementById("login-form");
@@ -37,6 +37,12 @@ document.addEventListener("DOMContentLoaded", () => {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             await updateProfile(userCredential.user, {
                 displayName: name
+            });
+            await setDoc(doc(db, "users", userCredential.user.uid), {
+                uid: userCredential.user.uid,
+                name,
+                email,
+                createdAt: serverTimestamp()
             });
             registerMessage.textContent = "Registered successfully. Redirecting to login...";
             registerMessage.style.color = "green";
@@ -105,13 +111,13 @@ document.addEventListener("DOMContentLoaded", () => {
             userEmail.textContent = user.email;
             userInfo.classList.remove("hidden");
             loginBtn.classList.add("modal-hidden");
-        
+
             uploadSection.classList.remove("hidden");
 
             if (loginModal) loginModal.classList.add("modal-hidden");
             if (registerModal) registerModal.classList.add("modal-hidden");
         } else {
-   
+
             const showRegisterEvent = new Event("show-register-modal");
             document.dispatchEvent(showRegisterEvent);
 
@@ -127,11 +133,11 @@ document.addEventListener("DOMContentLoaded", () => {
     logoutBtn.addEventListener("click", async () => {
         try {
             await signOut(auth);
-           
+
             loginForm.reset();
             registerForm.reset();
 
- 
+
             const showLoginEvent = new Event("show-login-modal");
             document.dispatchEvent(showLoginEvent);
         } catch (error) {

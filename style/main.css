@@ -453,7 +453,7 @@ label[for="genre-filter"] {
 
 
 .btn:hover {
-  background-color: #A9D6E5;
+  background-color: #145c65;
   /* transform: scale(1.03); */
 }
 
@@ -609,4 +609,82 @@ label[for="genre-filter"] {
 
 .notification.show {
   opacity: 1;
+}
+.recap-container {
+  max-width: 800px;
+  margin: auto;
+  padding: 2rem;
+  background: #f7fdfc;
+  border-radius: 16px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+#summary-widget ul {
+  list-style: none;
+  padding: 0;
+}
+
+#summary-widget ul li {
+  margin: 10px 0;
+}
+
+.quotes-container {
+  display: grid;
+  gap: 1rem;
+}
+
+.quote-card {
+  background: #d1e8e2;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+}
+
+.quote-card h3 {
+  margin-top: 0;
+}
+/* Modal base */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* blurred dark backdrop */
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* Modal content box */
+.modal-content {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+.hidden {
+  display: none;
+}
+#open-monthly-recap-btn {
+  background-color: #8ccbdc; /* Deep Teal from your palette */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#open-monthly-recap-btn:hover {
+  background-color: #145c65;
+  transform: translateY(-2px);
 }
