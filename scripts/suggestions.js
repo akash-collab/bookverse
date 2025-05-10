@@ -98,7 +98,7 @@ function attachVoteListeners() {
     });
   });
 }
-let voteChart; // global chart instance
+let voteChart;
 
 function updateChart(labels, data) {
   if (!voteChart) {

@@ -26,7 +26,7 @@ discussionBtn.addEventListener("click", () => {
   document.getElementById("suggestion-section").classList.add("hidden");
 });
 
-// Fetch books and populate dropdown
+
 async function loadBooksForDiscussion() {
   const snapshot = await getDocs(collection(db, "bookSuggestions"));
   snapshot.forEach(doc => {
@@ -40,7 +40,7 @@ async function loadBooksForDiscussion() {
 
 loadBooksForDiscussion();
 
-// Handle discussion creation
+
 discussionForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -70,28 +70,25 @@ discussionForm.addEventListener("submit", async (e) => {
   }
 });
 
-// Render discussions with pagination
+
 let lastVisible = null;
-let discussionsPerPage = 5; // You can change this to load more or fewer discussions at a time
+let discussionsPerPage = 5; 
 
 async function renderDiscussions() {
   const list = document.getElementById("discussion-list");
   list.innerHTML = "";
 
-  let discussionQuery = collection(db, "discussions");
-  if (lastVisible) {
-    discussionQuery = query(discussionQuery, orderBy("createdAt", "desc"), startAfter(lastVisible), limit(discussionsPerPage));
-  } else {
-    discussionQuery = query(discussionQuery, orderBy("createdAt", "desc"), limit(discussionsPerPage));
-  }
+  const discussionQuery = query(
+    collection(db, "discussions"),
+    orderBy("createdAt", "desc")
+  );
 
   const snapshot = await getDocs(discussionQuery);
   for (const docSnap of snapshot.docs) {
     const discussion = docSnap.data();
     const bookRef = doc(db, "bookSuggestions", discussion.bookId);
-    
-    // Make sure to await the book snapshot asynchronously
-    const bookSnap = await getDoc(bookRef);  // Awaiting this here
+
+    const bookSnap = await getDoc(bookRef);
     const bookTitle = bookSnap.exists() ? bookSnap.data().title : "Unknown Book";
 
     const card = document.createElement("div");
@@ -104,17 +101,7 @@ async function renderDiscussions() {
     `;
     list.appendChild(card);
   }
-
-  if (snapshot.docs.length > 0) {
-    lastVisible = snapshot.docs[snapshot.docs.length - 1];
-    const loadMoreBtn = document.createElement("button");
-    loadMoreBtn.textContent = "Load More Discussions";
-    loadMoreBtn.addEventListener("click", renderDiscussions);
-    list.appendChild(loadMoreBtn);
-  }
 }
-
-// Initialize Quill for rich text editor
 let quill;
 window.addEventListener("DOMContentLoaded", () => {
   quill = new Quill("#quill-editor", {
@@ -151,7 +138,6 @@ const commentText = document.getElementById("comment-text");
 
 let currentThreadId = null;
 
-// Attach click handlers to all "View Thread" buttons
 document.addEventListener("click", async (e) => {
   if (e.target.classList.contains("view-thread-btn")) {
     const discussionId = e.target.dataset.id;
@@ -164,7 +150,7 @@ document.addEventListener("click", async (e) => {
   }
 });
 
-// Load and render comments in real-time
+
 function loadComments(discussionId) {
   const commentsRef = collection(db, "discussions", discussionId, "comments");
   const q = query(commentsRef, orderBy("createdAt", "asc"));
@@ -183,7 +169,7 @@ function loadComments(discussionId) {
   });
 }
 
-// Handle comment submission
+
 commentForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const user = auth.currentUser;

@@ -14,7 +14,6 @@ body {
   color: var(--text-dark);
 }
 
-/* ========== Header ========== */
 header {
   background-color: var(--deep-teal);
   color: white;
@@ -24,7 +23,6 @@ header {
   align-items: center;
 }
 
-/* ========== Auth Modals ========== */
 #login-modal,
 #register-modal {
   display: flex;
@@ -107,7 +105,6 @@ header {
   display: none !important;
 }
 
-/* ========== Buttons ========== */
 #logoutBtn,
 #loginBtn,
 #discussionBtn {
@@ -128,7 +125,6 @@ header {
   background-color: #155d65;
 }
 
-/* ========== Main Layout ========== */
 main {
   padding: 2rem;
   max-width: 1000px;
@@ -152,7 +148,6 @@ main {
   z-index: 9999;
 }
 
-/* ========== Upload Book Section ========== */
 #upload-book-section {
   background-color: white;
   padding: 2rem;
@@ -172,7 +167,6 @@ main {
   text-align: center;
 }
 
-/* ========== Book Suggestions ========== */
 #suggestion-section {
   background-color: white;
   padding: 2rem;
@@ -189,7 +183,7 @@ main {
   text-align: center;
   color: var(--deep-teal);
   margin-bottom: 1rem;
-  /* display: none; */
+
 }
 
 @keyframes fadeInUp {
@@ -252,7 +246,6 @@ main {
   background-color: #6db4c7;
 }
 
-/* ========== Vote Chart ========== */
 #vote-chart-section {
   background: white;
   padding: 1.5rem;
@@ -260,7 +253,6 @@ main {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
 }
 
-/* ========== Discussion Area ========== */
 #discussion-section {
   background-color: var(--light-gray);
   padding: 2rem;
@@ -334,7 +326,6 @@ main {
   background-color: #6db4c7;
 }
 
-/* ========== Thread View ========== */
 #thread-view {
   background: white;
   padding: 1.5rem;
@@ -368,7 +359,7 @@ main {
   border-radius: 6px;
   cursor: pointer;
 }
-/* Genre Filter Section */
+
 #genre-filter {
   padding: 0.5rem 1rem;
   font-family: 'Poppins', sans-serif;
@@ -418,7 +409,7 @@ label[for="genre-filter"] {
 }
 .ql-toolbar button {
   height: 40px;
-  padding: 8px; /* optional */
+  padding: 8px; 
 }
 
 .ql-toolbar .ql-formats button svg {
@@ -438,9 +429,9 @@ label[for="genre-filter"] {
 .ql-toolbar .ql-formats button.active {
   background-color: var(--mint-green);
   color: white;
-  /* border-radius: 6px; */
+
 }
-/* Style for the Book Genre Dropdown */
+
 #bookGenre {
   padding: 0.75rem;
   font-family: var(--font-main);
@@ -459,13 +450,13 @@ label[for="genre-filter"] {
   box-shadow: 0 0 5px rgba(25, 116, 126, 0.5);
 }
 
-/* Options inside the dropdown */
+
 #bookGenre option {
   background-color: var(--mint-green);
   color: var(--deep-teal);
 }
 
-/* Optional: Add hover effect on options */
+
 #bookGenre option:hover {
   background-color: var(--sky-blue);
   color: white;

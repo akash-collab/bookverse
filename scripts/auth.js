@@ -27,7 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
     loginMessage.className = "form-message";
     loginForm.appendChild(loginMessage);
 
-    // Register user
     registerForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         const email = document.getElementById("register-email").value.trim();
@@ -54,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Login user
+
     loginForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         const email = document.getElementById("login-email").value;
@@ -96,24 +95,23 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // On auth state change
     onAuthStateChanged(auth, (user) => {
         const loadingScreen = document.getElementById("loading-screen");
         const loginModal = document.getElementById("login-modal");
         const registerModal = document.getElementById("register-modal");
 
         if (user) {
-            // User is logged in
+
             userEmail.textContent = user.email;
             userInfo.classList.remove("hidden");
             loginBtn.classList.add("modal-hidden");
-            // suggestionSection.classList.remove("hidden");
+        
             uploadSection.classList.remove("hidden");
-            // fetchAndRenderBooks();
+
             if (loginModal) loginModal.classList.add("modal-hidden");
             if (registerModal) registerModal.classList.add("modal-hidden");
         } else {
-            // User is not logged in
+   
             const showRegisterEvent = new Event("show-register-modal");
             document.dispatchEvent(showRegisterEvent);
 
@@ -126,22 +124,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (loadingScreen) loadingScreen.style.display = "none";
     });
-    // Logout
     logoutBtn.addEventListener("click", async () => {
         try {
             await signOut(auth);
-            // Reset forms if needed
+           
             loginForm.reset();
             registerForm.reset();
 
-            // Show login modal again
+ 
             const showLoginEvent = new Event("show-login-modal");
             document.dispatchEvent(showLoginEvent);
         } catch (error) {
             console.log("Logout error:", error.message);
         }
     });
-    //Upload Book suggestion
+
     uploadForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         const title = document.getElementById("book-title").value;
