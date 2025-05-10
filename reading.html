@@ -1,38 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Reading Progress - BookVerse</title>
-  <link rel="stylesheet" href="style/main.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reading Progress - BookVerse</title>
+    <link rel="icon" type="image/x-icon" href="assets/logo.ico">
+
+    <link rel="stylesheet" href="style/main.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 </head>
+
 <body>
-  <header>
-    <h1>📚 Reading Progress</h1>
-    <button class="btn secondary" onclick="window.location.href='index.html'">← Back to Home</button>
-  </header>
+    <header>
+        <h1>📚 Reading Progress</h1>
+        <button class="btn secondary" onclick="window.location.href='index.html'">← Back to Home</button>
+    </header>
 
-  <main>
-    <section id="progress-form-section">
-      <h2>Add a Book</h2>
-      <form id="progress-form" class="auth-form">
-        <input type="text" id="book-name" placeholder="Book Title" required>
-        <input type="number" id="total-pages" placeholder="Total Pages" required>
-        <input type="number" id="pages-read" placeholder="Pages Read" required>
-        <button type="submit" id="track-progress">Track Progress</button>
-        <p id="progress-message" class="form-message"></p>
-      </form>
-    </section>
+    <main>
+        <section id="progress-form-section">
+            <h2>Add a Book</h2>
+            <form id="progress-form" class="auth-form">
+                <input type="text" id="book-name" placeholder="Book Title" required>
+                <input type="number" id="total-pages" placeholder="Total Pages" required>
+                <input type="number" id="pages-read" placeholder="Pages Read" required>
+                <button type="submit" id="track-progress">Track Progress</button>
+                <p id="progress-message" class="form-message"></p>
+            </form>
+        </section>
 
-    <section id="reading-progress-section">
-      <h2>Your Reading Progress</h2>
-      <div id="reading-list" class="suggestion-container"></div>
-    </section>
-    <div id="notification" class="notification hidden"></div>
-  </main>
+        <section id="reading-progress-section">
+            <h2>Your Reading Progress</h2>
+            <div id="reading-list" class="suggestion-container"></div>
+        </section>
+        <div id="notification" class="notification hidden"></div>
+    </main>
 
-  <script type="module" src="firebase/config.js"></script>
-  <script type="module" src="scripts/reading.js"></script>
+    <script type="module" src="firebase/config.js"></script>
+    <script type="module" src="scripts/reading.js"></script>
 </body>
+
 </html>
