@@ -5,7 +5,7 @@ import {
   onSnapshot,
   query,
   where
-} from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+} from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('progress-form');

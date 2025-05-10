@@ -102,32 +102,43 @@ async function renderDiscussions() {
     list.appendChild(card);
   }
 }
-let quill;
-window.addEventListener("DOMContentLoaded", () => {
-  quill = new Quill("#quill-editor", {
+function initializeQuill() {
+  if (typeof window.Quill === 'undefined') {
+    console.warn('Quill not loaded - editor will use plain text');
+    return;
+  }
+
+  // Destroy existing Quill instance if any
+  if (quill) quill = null;
+  
+  quill = new window.Quill("#quill-editor", { // Corrected to window.Quill
     theme: "snow",
     placeholder: "Write a comment...",
     modules: {
       toolbar: [
         ['bold', 'italic', 'underline', 'strike'],
         ['blockquote', 'code-block'],
-        [{ list: 'ordered' }, { list: 'bullet' }],
-        [{ align: [] }],
-        [{ size: ['small', false, 'large', 'huge'] }],
-        [{ color: [] }, { background: [] }],
-        [{ font: [] }],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+        ['clean']
       ]
     }
   });
-});
+}
 
-const toolbarButtons = document.querySelectorAll('.ql-toolbar button');
-
-toolbarButtons.forEach(button => {
-  button.addEventListener('click', () => {
-    toolbarButtons.forEach(btn => btn.classList.remove('active'));
-    button.classList.add('active');
-  });
+// Initialize when thread view opens
+document.addEventListener("click", async (e) => {
+  if (e.target.classList.contains("view-thread-btn")) {
+    const discussionId = e.target.dataset.id;
+    currentThreadId = discussionId;
+    const docSnap = await getDoc(doc(db, "discussions", discussionId));
+    const data = docSnap.data();
+    threadTitle.textContent = `Discussion: ${data.title}`;
+    threadView.classList.remove("hidden");
+    
+    // Initialize Quill here after container is visible
+    initializeQuill();
+    loadComments(discussionId);
+  }
 });
 
 const threadView = document.getElementById("thread-view");

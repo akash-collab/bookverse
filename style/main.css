@@ -390,26 +390,9 @@ label[for="genre-filter"] {
   margin-left: 1rem;
 }
 
-.ql-toolbar .ql-formats button.ql-bold,
-.ql-toolbar .ql-formats button.ql-italic,
-.ql-toolbar .ql-formats button.ql-underline,
-.ql-toolbar .ql-formats button.ql-strike,
-.ql-toolbar .ql-formats button.ql-list,
-.ql-toolbar .ql-formats button.ql-blockquote,
-.ql-toolbar .ql-formats button.ql-code-block,
-.ql-toolbar .ql-formats button.ql-link,
-.ql-toolbar .ql-formats button.ql-image {
-  background-color: white !important;
-  color: var(--deep-teal);
-  border-radius: 6px;
-  transition: background-color 0.2s ease;
-}
+
 .ql-toolbar .ql-formats button:hover {
   background-color: var(--mint-green) !important;
-}
-.ql-toolbar button {
-  height: 40px;
-  padding: 8px; 
 }
 
 .ql-toolbar .ql-formats button svg {
@@ -485,4 +468,32 @@ label[for="genre-filter"] {
   line-height: 20px;
   border-radius: 20px 0 0 20px;
   transition: width 0.3s ease-in-out;
+}
+#quill-editor {
+  min-height: 150px;
+  margin-bottom: 1rem;
+}
+.ql-toolbar {
+  border-radius: 4px 4px 0 0;
+  border: 1px solid #ccc;
+}
+.ql-container {
+  border-radius: 0 0 4px 4px;
+  border: 1px solid #ccc;
+}
+/* Add to main.css */
+#thread-view {
+  /* Existing styles */
+  position: relative; /* Add this */
+}
+
+#quill-editor {
+  min-height: 150px;
+  margin-bottom: 1rem;
+  background: white; /* Add this */
+}
+
+.ql-container.ql-snow {
+  border: 1px solid #ccc !important;
+  border-radius: 4px;
 }
