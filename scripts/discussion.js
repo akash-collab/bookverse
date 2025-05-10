@@ -8,7 +8,8 @@ import {
   getDoc,
   query,
   orderBy,
-  onSnapshot
+  onSnapshot,
+  limit
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
 const discussionForm = document.getElementById("discussion-form");
@@ -20,10 +21,11 @@ const discussionSection = document.getElementById("discussion-section");
 
 discussionBtn.addEventListener("click", () => {
   discussionSection.classList.remove("hidden");
-  
+
   document.getElementById("upload-book-section").classList.add("hidden");
   document.getElementById("suggestion-section").classList.add("hidden");
 });
+
 // Fetch books and populate dropdown
 async function loadBooksForDiscussion() {
   const snapshot = await getDocs(collection(db, "bookSuggestions"));
@@ -61,22 +63,35 @@ discussionForm.addEventListener("submit", async (e) => {
     message.textContent = "Discussion created!";
     message.style.color = "green";
     discussionForm.reset();
-    await renderDiscussions(); // ✅ Refresh the discussion list
+    await renderDiscussions();
   } catch (err) {
     message.textContent = "Error creating discussion.";
     message.style.color = "red";
   }
 });
 
+// Render discussions with pagination
+let lastVisible = null;
+let discussionsPerPage = 5; // You can change this to load more or fewer discussions at a time
+
 async function renderDiscussions() {
   const list = document.getElementById("discussion-list");
   list.innerHTML = "";
 
-  const snapshot = await getDocs(collection(db, "discussions"));
+  let discussionQuery = collection(db, "discussions");
+  if (lastVisible) {
+    discussionQuery = query(discussionQuery, orderBy("createdAt", "desc"), startAfter(lastVisible), limit(discussionsPerPage));
+  } else {
+    discussionQuery = query(discussionQuery, orderBy("createdAt", "desc"), limit(discussionsPerPage));
+  }
+
+  const snapshot = await getDocs(discussionQuery);
   for (const docSnap of snapshot.docs) {
     const discussion = docSnap.data();
     const bookRef = doc(db, "bookSuggestions", discussion.bookId);
-    const bookSnap = await getDoc(bookRef);
+    
+    // Make sure to await the book snapshot asynchronously
+    const bookSnap = await getDoc(bookRef);  // Awaiting this here
     const bookTitle = bookSnap.exists() ? bookSnap.data().title : "Unknown Book";
 
     const card = document.createElement("div");
@@ -89,7 +104,45 @@ async function renderDiscussions() {
     `;
     list.appendChild(card);
   }
+
+  if (snapshot.docs.length > 0) {
+    lastVisible = snapshot.docs[snapshot.docs.length - 1];
+    const loadMoreBtn = document.createElement("button");
+    loadMoreBtn.textContent = "Load More Discussions";
+    loadMoreBtn.addEventListener("click", renderDiscussions);
+    list.appendChild(loadMoreBtn);
+  }
 }
+
+// Initialize Quill for rich text editor
+let quill;
+window.addEventListener("DOMContentLoaded", () => {
+  quill = new Quill("#quill-editor", {
+    theme: "snow",
+    placeholder: "Write a comment...",
+    modules: {
+      toolbar: [
+        ['bold', 'italic', 'underline', 'strike'],
+        ['blockquote', 'code-block'],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        [{ align: [] }],
+        [{ size: ['small', false, 'large', 'huge'] }],
+        [{ color: [] }, { background: [] }],
+        [{ font: [] }],
+      ]
+    }
+  });
+});
+
+const toolbarButtons = document.querySelectorAll('.ql-toolbar button');
+
+toolbarButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    toolbarButtons.forEach(btn => btn.classList.remove('active'));
+    button.classList.add('active');
+  });
+});
+
 const threadView = document.getElementById("thread-view");
 const threadTitle = document.getElementById("thread-title");
 const threadComments = document.getElementById("thread-comments");
@@ -120,9 +173,12 @@ function loadComments(discussionId) {
     threadComments.innerHTML = "";
     snapshot.forEach(doc => {
       const data = doc.data();
-      const p = document.createElement("p");
-      p.textContent = `${data.user}: ${data.text}`;
-      threadComments.appendChild(p);
+      const commentDiv = document.createElement("div");
+      commentDiv.className = "comment";
+      commentDiv.innerHTML = `
+        <strong>${data.user}</strong>: ${data.text}
+      `;
+      threadComments.appendChild(commentDiv);
     });
   });
 }
@@ -135,11 +191,11 @@ commentForm.addEventListener("submit", async (e) => {
 
   await addDoc(collection(db, "discussions", currentThreadId, "comments"), {
     user: user.displayName || "Anonymous",
-    text: commentText.value,
+    text: quill.root.innerHTML,
     createdAt: serverTimestamp()
   });
 
-  commentText.value = "";
+  quill.setContents([]);
 });
 
 renderDiscussions();

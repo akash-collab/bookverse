@@ -8,6 +8,7 @@
     <link rel="icon" type="image/x-icon" href="assets/logo.ico">
     <link rel="stylesheet" href="style/main.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 </head>
 
@@ -16,7 +17,7 @@
     <header>
         <h1>BookVerse</h1>
         <div style="display: flex; gap: 1rem; align-items: center;">
-            <button id="discussionBtn">Discussions</button>
+            <button onclick="window.location.href='reading.html'">Reading Progress</button> 
             <button id="loginBtn">Login</button>
             <div id="user-info" class="hidden" style="display: flex; align-items: center; gap: 1rem;">
                 <span id="user-email" style="font-weight: 500;"></span>
@@ -24,7 +25,7 @@
             </div>
         </div>
     </header>
-    
+
     <main>
         <section id="upload-book-section" class="hidden">
             <h2>Suggest a Book</h2>
@@ -32,16 +33,35 @@
                 <input type="text" id="book-title" placeholder="Book Title" required>
                 <input type="text" id="book-author" placeholder="Author" required>
                 <textarea id="book-description" placeholder="Description" required></textarea>
+                <select id="bookGenre" required>
+                    <option value="">Select a genre</option>
+                    <option value="Fantasy">Fantasy</option>
+                    <option value="Mystery">Mystery</option>
+                    <option value="Sci-Fi">Sci-Fi</option>
+                    <option value="Romance">Romance</option>
+                    <option value="Non-fiction">Non-fiction</option>
+                </select>
                 <button type="submit">Submit Book</button>
                 <p id="upload-message" class="form-message"></p>
             </form>
         </section>
-        
+
         <section id="suggestion-section" class="hidden">
             <h2>Book Suggestions</h2>
         </section>
+        <label for="genre-filter">Filter by Genre:</label>
+        <select id="genre-filter">
+            <option value="">All Genres</option>
+            <option value="Fantasy">Fantasy</option>
+            <option value="Mystery">Mystery</option>
+            <option value="Sci-Fi">Sci-Fi</option>
+            <option value="Romance">Romance</option>
+            <option value="Non-fiction">Non-fiction</option>
+        </select>
         <div id="suggestion-list" class="suggestion-container"></div>
-        
+
+        <button id="discussionBtn">Start a Discussion</button>
+
         <section id="discussion-section" class="hidden">
             <h2>Start a Discussion</h2>
             <form id="discussion-form" class="discussion-form">
@@ -54,13 +74,14 @@
             </form>
 
             <div id="discussion-list" class="discussion-list">
-                <!-- JS will populate discussion cards -->
+                
             </div>
             <div id="thread-view" class="hidden">
                 <h3 id="thread-title">Discussion Thread</h3>
                 <div id="thread-comments"></div>
                 <form id="comment-form">
-                    <textarea id="comment-text" placeholder="Write a comment..." required></textarea>
+                    <div id="quill-editor" style="height: 150px;"></div>
+                    <input type="hidden" id="comment-text">
                     <button type="submit">Post Comment</button>
                 </form>
             </div>
@@ -71,6 +92,23 @@
             <h2>Live Vote Results</h2>
             <canvas id="voteChart" height="100"></canvas>
         </section>
+        <!-- <section id="reading-progress-section" class="hidden tracker-card">
+    <h2>Reading Progress</h2>
+    <select id="currently-reading-book"></select>
+
+    <label>Total Pages:</label>
+    <input type="number" id="total-pages" placeholder="e.g. 300" />
+
+    <label>Pages Read:</label>
+    <input type="number" id="pages-read" placeholder="e.g. 120" />
+
+    <button id="update-progress">Update Progress</button>
+
+    <div id="progress-container" class="progress-container">
+        <div id="progress-bar" class="progress-bar"></div>
+    </div>
+    <p id="progress-percentage">0%</p>
+</section> -->
     </main>
 
     <!-- Login Modal -->
@@ -109,6 +147,8 @@
     <script type="module" src="scripts/auth.js"></script>
     <script type="module" src="scripts/suggestions.js"></script>
     <script type="module" src="scripts/discussion.js"></script>
+    <script src="https://cdn.quilljs.com/1.3.7/quill.js"></script>
+    <script type="module" src="scripts/reading.js"></script>
 </body>
 
 </html>

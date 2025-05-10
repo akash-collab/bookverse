@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     async function fetchAndRenderBooks() {
-        const querySnapshot = await getDocs(collection(db, "books"));
+        const querySnapshot = await getDocs(collection(db, "bookSuggestions"));
         suggestionSection.innerHTML = "<h2>Book Suggestions</h2>";
         const books = [];
         querySnapshot.forEach((doc) => {
@@ -107,9 +107,9 @@ document.addEventListener("DOMContentLoaded", () => {
             userEmail.textContent = user.email;
             userInfo.classList.remove("hidden");
             loginBtn.classList.add("modal-hidden");
-            suggestionSection.classList.remove("hidden");
+            // suggestionSection.classList.remove("hidden");
             uploadSection.classList.remove("hidden");
-            fetchAndRenderBooks();
+            // fetchAndRenderBooks();
             if (loginModal) loginModal.classList.add("modal-hidden");
             if (registerModal) registerModal.classList.add("modal-hidden");
         } else {
@@ -147,11 +147,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const title = document.getElementById("book-title").value;
         const author = document.getElementById("book-author").value;
         const description = document.getElementById("book-description").value;
+        const genre = document.getElementById("bookGenre").value;
         try {
             await addDoc(collection(db, "bookSuggestions"), {
                 title,
                 author,
                 description,
+                genre,
                 timestamp: serverTimestamp(),
                 votes: 0,
                 voters: [],
