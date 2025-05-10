@@ -433,6 +433,34 @@ label[for="genre-filter"] {
   box-shadow: 0 0 5px rgba(25, 116, 126, 0.5);
 }
 
+.btn {
+  background-color: #8ccbdc; /* Deep Teal */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 8px;
+  border-radius: 12px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+.btn:hover {
+  background-color: #A9D6E5;
+  /* transform: scale(1.03); */
+}
+
+.btn.secondary {
+  background-color: #A9D6E5;
+  color: #19747E;
+}
+
+.btn.secondary:hover {
+  background-color: #8ccbdc;
+}
 
 #bookGenre option {
   background-color: var(--mint-green);
