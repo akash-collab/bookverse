@@ -8,25 +8,31 @@ import {
   getDoc,
   query,
   orderBy,
-  onSnapshot,
-  limit
+  onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
+// DOM elements
 const discussionForm = document.getElementById("discussion-form");
 const bookDropdown = document.getElementById("discussion-book");
 const message = document.getElementById("discussion-message");
-
 const discussionBtn = document.getElementById("discussionBtn");
 const discussionSection = document.getElementById("discussion-section");
+const threadView = document.getElementById("thread-view");
+const threadTitle = document.getElementById("thread-title");
+const threadComments = document.getElementById("thread-comments");
+const commentForm = document.getElementById("comment-form");
 
+let currentThreadId = null;
+let quill = null;
+
+// Show Discussion Section
 discussionBtn.addEventListener("click", () => {
   discussionSection.classList.remove("hidden");
-
   document.getElementById("upload-book-section").classList.add("hidden");
   document.getElementById("suggestion-section").classList.add("hidden");
 });
 
-
+// Load books into dropdown
 async function loadBooksForDiscussion() {
   const snapshot = await getDocs(collection(db, "bookSuggestions"));
   snapshot.forEach(doc => {
@@ -40,7 +46,7 @@ async function loadBooksForDiscussion() {
 
 loadBooksForDiscussion();
 
-
+// Create new discussion
 discussionForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -70,10 +76,7 @@ discussionForm.addEventListener("submit", async (e) => {
   }
 });
 
-
-let lastVisible = null;
-let discussionsPerPage = 5; 
-
+// Render discussions
 async function renderDiscussions() {
   const list = document.getElementById("discussion-list");
   list.innerHTML = "";
@@ -87,7 +90,6 @@ async function renderDiscussions() {
   for (const docSnap of snapshot.docs) {
     const discussion = docSnap.data();
     const bookRef = doc(db, "bookSuggestions", discussion.bookId);
-
     const bookSnap = await getDoc(bookRef);
     const bookTitle = bookSnap.exists() ? bookSnap.data().title : "Unknown Book";
 
@@ -102,66 +104,31 @@ async function renderDiscussions() {
     list.appendChild(card);
   }
 }
+
+// Initialize Quill only once
 function initializeQuill() {
   if (typeof window.Quill === 'undefined') {
-    console.warn('Quill not loaded - editor will use plain text');
+    console.error('Quill library not loaded!');
     return;
   }
 
-  // Destroy existing Quill instance if any
-  if (quill) quill = null;
-  
-  quill = new window.Quill("#quill-editor", { // Corrected to window.Quill
-    theme: "snow",
-    placeholder: "Write a comment...",
-    modules: {
-      toolbar: [
-        ['bold', 'italic', 'underline', 'strike'],
-        ['blockquote', 'code-block'],
-        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-        ['clean']
-      ]
-    }
-  });
+  if (!quill) {
+    quill = new window.Quill("#quill-editor", {
+      theme: "snow",
+      placeholder: "Write a comment...",
+      modules: {
+        toolbar: [
+          ['bold', 'italic', 'underline', 'strike'],
+          ['blockquote', 'code-block'],
+          [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+          ['clean']
+        ]
+      }
+    });
+  }
 }
 
-// Initialize when thread view opens
-document.addEventListener("click", async (e) => {
-  if (e.target.classList.contains("view-thread-btn")) {
-    const discussionId = e.target.dataset.id;
-    currentThreadId = discussionId;
-    const docSnap = await getDoc(doc(db, "discussions", discussionId));
-    const data = docSnap.data();
-    threadTitle.textContent = `Discussion: ${data.title}`;
-    threadView.classList.remove("hidden");
-    
-    // Initialize Quill here after container is visible
-    initializeQuill();
-    loadComments(discussionId);
-  }
-});
-
-const threadView = document.getElementById("thread-view");
-const threadTitle = document.getElementById("thread-title");
-const threadComments = document.getElementById("thread-comments");
-const commentForm = document.getElementById("comment-form");
-const commentText = document.getElementById("comment-text");
-
-let currentThreadId = null;
-
-document.addEventListener("click", async (e) => {
-  if (e.target.classList.contains("view-thread-btn")) {
-    const discussionId = e.target.dataset.id;
-    currentThreadId = discussionId;
-    const docSnap = await getDoc(doc(db, "discussions", discussionId));
-    const data = docSnap.data();
-    threadTitle.textContent = `Discussion: ${data.title}`;
-    threadView.classList.remove("hidden");
-    loadComments(discussionId);
-  }
-});
-
-
+// Load comments and listen to updates
 function loadComments(discussionId) {
   const commentsRef = collection(db, "discussions", discussionId, "comments");
   const q = query(commentsRef, orderBy("createdAt", "asc"));
@@ -172,27 +139,48 @@ function loadComments(discussionId) {
       const data = doc.data();
       const commentDiv = document.createElement("div");
       commentDiv.className = "comment";
-      commentDiv.innerHTML = `
-        <strong>${data.user}</strong>: ${data.text}
-      `;
+      commentDiv.innerHTML = `<strong>${data.user}</strong>: ${data.text}`;
       threadComments.appendChild(commentDiv);
     });
   });
 }
 
-
+// Handle comment submission
 commentForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const user = auth.currentUser;
-  if (!user || !currentThreadId) return;
+  if (!user || !currentThreadId || !quill) return;
 
-  await addDoc(collection(db, "discussions", currentThreadId, "comments"), {
-    user: user.displayName || "Anonymous",
-    text: quill.root.innerHTML,
-    createdAt: serverTimestamp()
-  });
+  try {
+    await addDoc(collection(db, "discussions", currentThreadId, "comments"), {
+      user: user.displayName || user.email,
+      text: quill.root.innerHTML,
+      createdAt: serverTimestamp()
+    });
+    quill.setContents([]);
+  } catch (error) {
+    console.error("Error posting comment:", error);
+  }
+});
 
-  quill.setContents([]);
+// Handle View Thread button
+document.addEventListener("click", async (e) => {
+  if (e.target.classList.contains("view-thread-btn")) {
+    const discussionId = e.target.dataset.id;
+    currentThreadId = discussionId;
+
+    try {
+      const docSnap = await getDoc(doc(db, "discussions", discussionId));
+      const data = docSnap.data();
+      threadTitle.textContent = `Discussion: ${data.title}`;
+      threadView.classList.remove("hidden");
+
+      initializeQuill();
+      loadComments(discussionId);
+    } catch (err) {
+      console.error("Failed to load discussion thread:", err);
+    }
+  }
 });
 
 renderDiscussions();

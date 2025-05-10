@@ -469,31 +469,80 @@ label[for="genre-filter"] {
   border-radius: 20px 0 0 20px;
   transition: width 0.3s ease-in-out;
 }
-#quill-editor {
-  min-height: 150px;
-  margin-bottom: 1rem;
-}
-.ql-toolbar {
-  border-radius: 4px 4px 0 0;
-  border: 1px solid #ccc;
-}
+/* ===== Quill Editor Custom Styling ===== */
+
+/* Editor area */
 .ql-container {
-  border-radius: 0 0 4px 4px;
-  border: 1px solid #ccc;
-}
-/* Add to main.css */
-#thread-view {
-  /* Existing styles */
-  position: relative; /* Add this */
-}
-
-#quill-editor {
+  border-radius: 12px;
+  background-color: white;
+  font-family: var(--font-main);
+  font-size: 1rem;
+  color: var(--text-dark);
+  border: 1px solid var(--sky-blue);
   min-height: 150px;
-  margin-bottom: 1rem;
-  background: white; /* Add this */
+  margin-top: 1rem;
 }
 
-.ql-container.ql-snow {
-  border: 1px solid #ccc !important;
-  border-radius: 4px;
+/* Toolbar background and layout */
+.ql-toolbar {
+  background-color: var(--light-gray);
+  border-radius: 12px 12px 0 0;
+  border: 1px solid var(--sky-blue);
+  padding: 0.5rem;
+}
+
+/* Format group spacing */
+.ql-toolbar .ql-formats {
+  margin-right: 1rem;
+}
+
+/* Button base style */
+.ql-toolbar button,
+.ql-toolbar .ql-picker-label {
+  background: transparent;
+  border: none;
+  color: var(--deep-teal);
+  transition: background-color 0.3s ease;
+  border-radius: 8px;
+  padding: 0.4rem;
+}
+
+/* On hover */
+.ql-toolbar button:hover,
+.ql-toolbar .ql-picker-label:hover {
+  background-color: var(--mint-green);
+}
+
+/* Active/selected buttons */
+.ql-toolbar button.ql-active,
+.ql-toolbar .ql-picker-label.ql-active {
+  background-color: var(--mint-green) !important;
+  color: white ;
+}
+
+/* Dropdown menus */
+.ql-toolbar .ql-picker-options {
+  background-color: white;
+  border: 1px solid var(--sky-blue);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Dropdown items */
+.ql-toolbar .ql-picker-item {
+  color: var(--deep-teal);
+  padding: 0.4rem 0.75rem;
+}
+
+.ql-toolbar .ql-picker-item:hover {
+  background-color: var(--mint-green);
+}
+
+/* Adjust SVG icons */
+.ql-toolbar button svg {
+  width: 18px;
+  height: 18px;
+}
+.ql-italic, .ql-bold, .ql-underline, .ql-strike, .ql-blockquote, .ql-code-block, .ql-list, .ql-clean{
+  background-color: white !important;
 }
