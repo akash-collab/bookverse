@@ -688,3 +688,6 @@ label[for="genre-filter"] {
   background-color: #145c65;
   transform: translateY(-2px);
 }
+#open-monthly-recap-btn:active {
+  transform: scale(0.95);
+}
