@@ -19,6 +19,7 @@
         <div style="display: flex; gap: 1rem; align-items: center;">
             <button id="open-monthly-recap-btn">📊 View Monthly Recap</button>
             <button class="btn" onclick="window.location.href='reading.html'">Reading Progress</button>
+            <button id="theme-toggle-btn">🌙 Dark Mode</button>
             <button id="loginBtn">Login</button>
             <div id="user-info" class="hidden" style="display: flex; align-items: center; gap: 1rem;">
                 <span id="user-email" style="font-weight: 500;"></span>
@@ -61,8 +62,7 @@
         </select>
         <div id="suggestion-list" class="suggestion-container"></div>
 
-
-
+        <!-- <button id="discussionBtn">Open Discussion</button> -->
         <section id="discussion-section" class="hidden">
             <h2>Start a Discussion</h2>
             <form id="discussion-form" class="discussion-form">
@@ -148,6 +148,7 @@
     <script type="module" src="scripts/suggestions.js"></script>
     <script type="module" src="scripts/discussion.js"></script>
     <script type="module" src="scripts/dashboard.js"></script>
+    <script type="module" src="scripts/theme.js"></script>
 </body>
 
 </html>

@@ -104,7 +104,7 @@ async function renderDiscussions() {
     list.appendChild(card);
   }
 }
-
+document.getElementById("discussion-section").classList.remove("hidden");
 // Initialize Quill only once
 function initializeQuill() {
   if (typeof window.Quill === 'undefined') {

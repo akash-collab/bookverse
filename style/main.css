@@ -438,7 +438,7 @@ label[for="genre-filter"] {
 }
 
 .btn {
-  background-color: #8ccbdc;
+  background-color: #145c65;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -453,8 +453,7 @@ label[for="genre-filter"] {
 
 
 .btn:hover {
-  background-color: #145c65;
-  /* transform: scale(1.03); */
+  background-color: #8ccbdc;
 }
 
 .btn.secondary {
@@ -672,7 +671,7 @@ label[for="genre-filter"] {
   display: none;
 }
 #open-monthly-recap-btn {
-  background-color: #8ccbdc; /* Deep Teal from your palette */
+  background-color: #145c65; /* Deep Teal from your palette */
   color: white;
   border: none;
   padding: 10px 20px;
@@ -685,9 +684,49 @@ label[for="genre-filter"] {
 }
 
 #open-monthly-recap-btn:hover {
-  background-color: #145c65;
+  background-color: #8ccbdc;
   transform: translateY(-2px);
 }
 #open-monthly-recap-btn:active {
   transform: scale(0.95);
+}
+
+body.dark-mode {
+  background-color: #121212;
+  color: #f1f1f1;
+}
+
+.dark-mode header,
+.dark-mode .modal-content,
+.dark-mode .auth-form,
+.dark-mode section {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode select,
+.dark-mode button {
+  background-color: #2c2c2c;
+  color: #ffffff;
+  border: 1px solid #444;
+}
+
+.dark-mode .modal {
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+}
+
+.dark-mode .btn,
+.dark-mode button {
+  background-color: #19747E;
+  color: white;
+}
+
+.dark-mode .suggestion-container,
+.dark-mode .discussion-card,
+.dark-mode .quote-card {
+  background-color: #1f1f1f;
+  border-color: #333;
 }
