@@ -15,7 +15,9 @@
 <body>
     <div id="loading-screen">Loading...</div>
     <header>
-        <h1>BookVerse</h1>
+        <img src="assets/logo.png" alt="Web image" id="main-img">
+        <h1 class="pulse-wrapper" id="site-title">BookVerse</h1>
+        <canvas id="fireworks-canvas"></canvas>
         <div style="display: flex; gap: 1rem; align-items: center;">
             <button id="open-monthly-recap-btn">📊 View Monthly Recap</button>
             <button class="btn" onclick="window.location.href='reading.html'">Reading Progress</button>
@@ -148,6 +150,7 @@
     <script type="module" src="scripts/suggestions.js"></script>
     <script type="module" src="scripts/discussion.js"></script>
     <script type="module" src="scripts/dashboard.js"></script>
+    <script src="scripts/fireworks.js"></script>
     <script type="module" src="scripts/theme.js"></script>
 </body>
 

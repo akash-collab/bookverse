@@ -22,7 +22,63 @@ header {
   justify-content: space-between;
   align-items: center;
 }
+h1 {
+    font-family: 'Poppins', sans-serif; 
+    font-size: 4rem; 
+    font-weight: 700; 
+    color: #adb8be; 
+    margin: 0;
+    padding: 0; 
+    letter-spacing: 1px; 
+    text-align: center; 
+    transition: color 0.3s ease; 
+}
+.pulse-wrapper {
+    position: relative;
+    display: inline-block;
+    z-index: 1;
+}
 
+.pulse-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0px;
+    height: 0px;
+    background: radial-gradient(circle, rgba(169,214,229,0.6) 0%, rgba(25,116,126,0.2) 70%, transparent 100%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 1s ease-out forwards;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@keyframes pulse {
+    0% {
+        width: 0px;
+        height: 0px;
+        opacity: 1;
+    }
+    100% {
+        width: 300px;
+        height: 300px;
+        opacity: 0;
+    }
+}
+h1:hover {
+    color: #A9D6E5; 
+}
+#main-img {
+    width: 120px; 
+    height: auto; 
+    object-fit: cover; 
+    border-radius: 8px; 
+    transition: transform 0.3s ease; 
+}
+
+#main-img:hover {
+    transform: scale(1.1); 
+}
 #login-modal,
 #register-modal {
   display: flex;
@@ -706,6 +762,59 @@ label[for="genre-filter"] {
   transform: scale(0.95);
 }
 
+/* General Button Styles */
+#theme-toggle-btn {
+    background-color: #19747e; /* Default button color (for light mode) */
+    color: #fff; /* Text color */
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Space between the icon and text */
+}
+
+#theme-toggle-btn:hover {
+    background-color: #1a6e6b; /* Darker shade for hover */
+    transform: scale(1.05); /* Slight grow effect on hover */
+}
+
+#theme-toggle-btn:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(25, 116, 126, 0.5); /* Subtle focus effect */
+}
+
+/* Icon Visibility */
+#theme-toggle-btn .icon,
+#theme-toggle-btn .text {
+    display: none; /* Hide both by default */
+}
+
+#theme-toggle-btn .light-icon,
+#theme-toggle-btn .light-text {
+    display: inline-block; /* Show for light mode */
+}
+
+.dark-mode #theme-toggle-btn .dark-icon,
+.dark-mode #theme-toggle-btn .dark-text {
+    display: inline-block; /* Show for dark mode */
+}
+
+/* Dark Mode Toggle Styles */
+.dark-mode #theme-toggle-btn {
+    background-color: #f5a623; /* Yellow for dark mode */
+    color: #333; /* Dark text for contrast */
+}
+
+.dark-mode #theme-toggle-btn:hover {
+    background-color: #d98a1b; /* Darker yellow on hover */
+}
+
 body.dark-mode {
   background-color: #353232;
   color: #f1f1f1;
@@ -838,4 +947,101 @@ body.dark-mode .book-suggestion h3 {
 
 body.dark-mode .book-suggestion p{
   color: #f5f5f5;
+}
+
+/* Background and text for discussion section */
+body.dark-mode #discussion-section {
+  background-color: #1e1e1e;
+  color: #f5f5f5;
+  border-radius: 10px;
+  padding: 2rem;
+}
+
+/* Input, select, and textarea styling */
+body.dark-mode #discussion-section input,
+body.dark-mode #discussion-section select,
+body.dark-mode #discussion-section textarea {
+  background-color: #2a2a2a;
+  color: #f5f5f5;
+  border: 1px solid #444;
+}
+
+/* Button styling */
+body.dark-mode #discussion-section button {
+  background-color: #19747E;
+  color: white;
+  border: none;
+}
+
+/* Discussion cards */
+body.dark-mode .discussion-card {
+  background-color: #2a2a2a;
+  color: #f5f5f5;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Text inside discussion cards */
+body.dark-mode .discussion-card h3,
+body.dark-mode .discussion-card p {
+  color: #f5f5f5;
+}
+
+/* Thread view */
+body.dark-mode #thread-view {
+  background-color: #2a2a2a;
+  color: #f5f5f5;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+
+/* Quill editor dark fix (optional, better theming) */
+body.dark-mode .ql-toolbar.ql-snow,
+body.dark-mode .ql-container.ql-snow {
+  background-color: #1e1e1e;
+  color: #f5f5f5;
+  border-color: #444;
+}
+
+/* General Styles */
+#upload-book-section {
+    background-color: #fff; /* Light mode background */
+    color: #333; /* Light mode text color */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Mode Styles */
+.dark-mode #upload-book-section {
+    background-color: #2c2c2c; /* Dark background */
+    color: #e1e1e1; /* Light text for contrast */
+}
+
+.dark-mode #upload-book-section input,
+.dark-mode #upload-book-section textarea,
+.dark-mode #upload-book-section select,
+.dark-mode #upload-book-section button {
+    background-color: #444; /* Dark inputs */
+    color: #e1e1e1; /* Light text */
+    border: 1px solid #555; /* Subtle borders for inputs */
+}
+
+.dark-mode #upload-book-section input:focus,
+.dark-mode #upload-book-section textarea:focus,
+.dark-mode #upload-book-section select:focus {
+    border-color: #19747e; /* Highlight input borders */
+    outline: none;
+}
+
+.dark-mode #upload-book-section button {
+    background-color: #19747e; /* Dark mode button */
+    color: #fff; /* Button text */
+}
+
+.dark-mode #upload-book-section button:hover {
+    background-color: #1a6e6b; /* Darker button on hover */
 }
