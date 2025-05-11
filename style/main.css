@@ -38,7 +38,11 @@ h1 {
     display: inline-block;
     z-index: 1;
 }
-
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Adds space between logo and BookVerse */
+}
 .pulse-ring {
     position: absolute;
     top: 50%;
