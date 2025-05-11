@@ -35,12 +35,6 @@ bookverse/
     ├─ /style/
   │  ├─ main.css  
 
-## Video Walkthrough of the project
-
-
-## Video Walkthrough of the codebase
-
-
 ## Features
 - 🔐 User Authentication using Firebase (Register, Login, Logout)
 - 📚 Book Suggestion System
