@@ -20,6 +20,8 @@
             <h1 class="pulse-wrapper" id="site-title">BookVerse</h1>
         </div>
         <div style="display: flex; gap: 1rem; align-items: center;">
+            <button id="open-bookverse-meeting-btn">Scheldule Meetings</button>
+            <button id="open-upcoming-meetings-btn">Upcoming Meetings</button>
             <button id="open-monthly-recap-btn">📊 View Monthly Recap</button>
             <button class="btn" onclick="window.location.href='reading.html'">Reading Progress</button>
             <button id="theme-toggle-btn">🌙 Dark Mode</button>
@@ -139,18 +141,42 @@
             <button id="close-monthly-recap-btn">Close</button>
         </div>
     </div>
+    <!-- Meeting Modal -->
+    <div id="bookverse-meeting-overlay" class="bookverse-modal-overlay">
+        <div class="bookverse-modal">
+            <h2 class="bookverse-modal-title">📅 Schedule a Virtual Meeting</h2>
 
+            <form id="bookverse-meeting-form" class="bookverse-form">
+                <input type="text" id="bookverse-meeting-title" placeholder="Meeting Title" required>
+                <input type="datetime-local" id="bookverse-meeting-datetime" required>
+                <input type="text" id="bookverse-meeting-link" placeholder="Meeting Link (Zoom/Meet)" required>
+                <button type="submit">Schedule</button>
+            </form>
+
+            <div id="bookverse-meeting-list" class="bookverse-meeting-list"></div>
+        </div>
+    </div>
+    <!-- Upcoming Meeting Modal -->
+    <div id="meeting-schedule-modal" class="modal" style="display: none;">
+  <div class="meeting-modal-content" style="max-width: 600px; margin: auto; padding: 1.5rem; border-radius: 8px;">
+    <h2 style="margin-bottom: 1rem;">📅 Upcoming Meetings</h2>
+
+    <div id="meeting-list-container"></div>
+
+    <div style="text-align: right; margin-top: 1.5rem;">
+      <button id="close-meeting-modal-btn" class="btn">Close</button>
+    </div>
+  </div>
+</div>
     <script src="https://cdn.quilljs.com/1.3.7/quill.js"></script>
-
-    <!-- Firebase Configuration -->
     <script type="module" src="firebase/config.js"></script>
-
-    <!-- Your App Scripts (in order, after external libs and Firebase config) -->
     <script type="module" src="scripts/authModal.js"></script>
     <script type="module" src="scripts/auth.js"></script>
     <script type="module" src="scripts/suggestions.js"></script>
     <script type="module" src="scripts/discussion.js"></script>
     <script type="module" src="scripts/dashboard.js"></script>
+    <script type="module" src="scripts/meeting.js"></script>
+    <script type="module" src="scripts/upcoming-meetings.js"></script>
     <script src="scripts/fireworks.js"></script>
     <script type="module" src="scripts/theme.js"></script>
 </body>
