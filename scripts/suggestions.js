@@ -1,3 +1,4 @@
+
 import { db, auth } from "../firebase/config.js";
 import {
   collection,
@@ -37,12 +38,14 @@ function renderSuggestions(userId) {
     suggestionList.innerHTML = "";
     const chartLabels = [];
     const chartData = [];
-    const genres = [];
+
+    const selectedGenre = $('#genre-filter').val();  // ← FIX HERE
+
     snapshot.forEach((docSnap) => {
       const data = docSnap.data();
       const bookId = docSnap.id;
 
-      if (!genreFilter.value || data.genre === genreFilter.value) {
+      if (!selectedGenre || data.genre === selectedGenre) {
         const hasVoted = data.voters?.includes(userId);
 
         chartLabels.push(data.title);
@@ -52,19 +55,20 @@ function renderSuggestions(userId) {
         suggestion.classList.add("book-suggestion");
 
         suggestion.innerHTML = `
-      <h3>${data.title}</h3>
-      <p>by ${data.author}</p>
-      <p><strong>Genre:</strong> ${data.genre}</p>
-      <p>${data.description}</p>
-      <p><strong>Votes:</strong> <span class="vote-count">${data.votes || 0}</span></p>
-      <button class="vote-btn" data-id="${bookId}" ${hasVoted ? 'disabled' : ''}>
-        ${hasVoted ? "Voted" : "Upvote"}
-      </button>
-    `;
+          <h3>${data.title}</h3>
+          <p>by ${data.author}</p>
+          <p><strong>Genre:</strong> ${data.genre}</p>
+          <p>${data.description}</p>
+          <p><strong>Votes:</strong> <span class="vote-count">${data.votes || 0}</span></p>
+          <button class="vote-btn" data-id="${bookId}" ${hasVoted ? 'disabled' : ''}>
+            ${hasVoted ? "Voted" : "Upvote"}
+          </button>
+        `;
 
         suggestionList.appendChild(suggestion);
       }
     });
+
     attachVoteListeners();
     updateChart(chartLabels, chartData);
   });
@@ -101,40 +105,41 @@ function attachVoteListeners() {
 let voteChart;
 
 function updateChart(labels, data) {
-  if (!voteChart) {
-    voteChart = new Chart(voteChartCanvas, {
-      type: 'bar',
-      data: {
-        labels,
-        datasets: [{
-          label: 'Votes',
-          data,
-          backgroundColor: '#19747E'
-        }]
-      },
-      options: {
-        indexAxis: 'y',
-        responsive: true,
-        plugins: {
-          legend: { display: false }
-        },
-        scales: {
-          x: {
-            beginAtZero: true,
-            ticks: { stepSize: 1 }
-          }
-        }
-      }
-    });
-  } else {
-    voteChart.data.labels = labels;
-    voteChart.data.datasets[0].data = data;
-    voteChart.update();
+  // ✅ Destroy existing chart if it exists
+  if (voteChart) {
+    voteChart.destroy();
   }
 
+  // ✅ Create new chart with updated data
+  voteChart = new Chart(voteChartCanvas, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Votes',
+        data,
+        backgroundColor: '#19747E'
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        x: {
+          beginAtZero: true,
+          ticks: { stepSize: 1 }
+        }
+      }
+    }
+  });
+
+  // ✅ Make chart section visible
   voteChartSection.classList.remove('hidden');
 }
-genreFilter.addEventListener("change", () => {
+$('#genre-filter').on('change', () => {
   if (auth.currentUser) {
     renderSuggestions(auth.currentUser.uid);
   }
